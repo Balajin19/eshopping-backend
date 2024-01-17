@@ -1,27 +1,25 @@
 const { default: axios } = require("axios");
-const mail = require("../helpers/mailContent");
+// const orderMail = require("../helpers/orderMailContent");
 
-const sendEmail = async ({ otp }) => {
-
+// const sendEmail = async ({ otp }) => {
+const sendEmail = async (to, subject, content) => {
   try {
-
     const response = await axios({
       method: "post",
       url: "https://api.sendinblue.com/v3/smtp/email",
       headers: {
         "content-type": "application/json",
         "api-key":
-          "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",
+          "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",
       },
       data: {
         sender: {
-          name: "E Shopping",
-          email: "eshopping@gmail.com",
+          name: "E-Shopping",
+          email: process.env.ADMIN_EMAIL,
         },
-        to: [{ email: "bn02149@gmail.com" }],
-        subject:
-          "E Shopping Account - your verification code for secure access",
-        htmlContent: mail({ otp }),
+        to: [{ email: to }],
+        subject: subject,
+        htmlContent: content,
       },
     });
     console.log("Email sent successfully", response.data);

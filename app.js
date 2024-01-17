@@ -1,4 +1,5 @@
 const express = require( "express" );
+const bodyParser = require( 'body-parser' );
 const cors = require("cors");
 const dotenv = require( "dotenv" );
 const routes = require( "./routes/routes.js" );
@@ -7,6 +8,8 @@ const product = require( "./routes/productRoutes.js" );
 const order = require( "./routes/orderRoutes.js" );
 const connectDb=require('./configDB/connectDB')
 const app = express();
+app.use(bodyParser.json({ limit: "500mb" }));
+app.use(bodyParser.urlencoded({ limit: "500mb", extended: true }));
 app.use(express.json());
 app.use(cors());
 const port = 8000;
