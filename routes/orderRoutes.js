@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const { isAdmin, requireSignIn, isUser } = require("../middleware/jwt");
 const sendEmail = require("../middleware/sendinblue");
 const orderMail = require("../helpers/orderMailContent");

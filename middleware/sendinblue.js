@@ -1,7 +1,5 @@
 const { default: axios } = require("axios");
-// const orderMail = require("../helpers/orderMailContent");
 
-// const sendEmail = async ({ otp }) => {
 const sendEmail = async (to, subject, content) => {
   try {
     const response = await axios({

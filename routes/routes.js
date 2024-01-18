@@ -1,18 +1,14 @@
 const express = require("express");
-const speakeasy = require("speakeasy");
 const router = express.Router();
 const mail = require( "../helpers/otpMailContent" );
 const jwt = require("jsonwebtoken");
 const { hashPassword, comparePassword } = require("../helpers/authHelper.js");
 const {
-  generateOTP,
   generateOtp,
   verifyOtp,
 } = require("../helpers/optController");
 const { requireSignIn, isAdmin, isUser } = require("../middleware/jwt.js");
 const sendEmail = require("../middleware/sendinblue");
-const sendMail = require("../middleware/sendinblue");
-const OtpDetails = require("../model/OtpModel");
 const UserDetails = require("../model/UserModel.js");
 const email = process.env.AUTH_EMAIL;
 router.get("/", (req, res) => {

@@ -1,4 +1,3 @@
-// const otpGenerator = require("otp-generator");
 const speakeasy = require("speakeasy");
 
 const generateOtp = () => {

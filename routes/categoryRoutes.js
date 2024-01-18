@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const slugify = require("slugify");
-const { requireSignIn, isAdmin, isUser } = require("../middleware/jwt.js");
+const { requireSignIn, isAdmin } = require("../middleware/jwt.js");
 const CategoryDetails = require("../model/Admin/CategoryModel.js");
 router.get("/", (req, res) => {
   const category = {
@@ -10,26 +10,20 @@ router.get("/", (req, res) => {
 
   res.send(category);
 });
-router.get( "/all-categories", async ( req, res, next ) =>
-{
-  try
-  {
+router.get("/all-categories", async (req, res, next) => {
+  try {
     const allCategories = await CategoryDetails.find().populate();
-      res.send({ allCategories, message: "All Catergories List" });
-
-  }
-  catch ( err )
-  {
-    next(err)
+    res.send({ allCategories, message: "All Catergories List" });
+  } catch (err) {
+    next(err);
   }
 });
 router.get("/get-category/:slug", async (req, res, next) => {
   try {
     const catergory = await CategoryDetails.findOne({
       slug: req.params.slug,
-    } ).populate();
-         res.send({ catergory, message: "Getting Catergory successfully" });
-
+    }).populate();
+    res.send({ catergory, message: "Getting Catergory successfully" });
   } catch (err) {
     next(err);
   }
@@ -48,9 +42,13 @@ router.post(
       const addCategory = await new CategoryDetails({
         name,
         slug: slugify(name),
-      } ).save();
+      }).save();
       const allCategories = await CategoryDetails.find().populate();
-      res.send({ allCategories, message: "New Category Added!",success:true });
+      res.send({
+        allCategories,
+        message: "New Category Added!",
+        success: true,
+      });
     } catch (err) {
       next(err);
     }

@@ -2,11 +2,10 @@ const express = require("express");
 const formidable = require("express-formidable");
 const router = express.Router();
 const slugify = require("slugify");
-const { requireSignIn, isAdmin, isUser } = require("../middleware/jwt.js");
+const { requireSignIn, isAdmin } = require("../middleware/jwt.js");
 const CategoryDetails = require("../model/Admin/CategoryModel.js");
 const ProductDetails = require("../model/Admin/ProductModel.js");
 const fs = require("fs");
-const UserDetails = require( "../model/UserModel.js" );
 router.get("/", (req, res) => {
   const product = {
     message: "Welcome to PRODUCT",
@@ -102,7 +101,6 @@ router.put(
       const { photo } = req.files;
       const { id } = req.params;
 
-    
       const updateProduct = await ProductDetails.findByIdAndUpdate(
         id,
         {
@@ -140,8 +138,7 @@ router.delete("/delete-product/:id", async (req, res, next) => {
   }
 });
 router.post("/product-filters", async (req, res) => {
-  try
-  {
+  try {
     const { checked, radio } = req.body;
     let args = {};
     if (checked.length > 0) args.category = checked;
@@ -168,13 +165,13 @@ router.get("/product-list/:page", async (req, res) => {
   try {
     const perPage = 6;
     const page = req.params.page ? req.params.page : 1;
-    
+
     const products = await ProductDetails.find({})
       .select("-photo")
       .skip((page - 1) * perPage)
       .limit(perPage)
       .sort({ createdAt: -1 });
-   
+
     res.send({ success: true, products });
   } catch (err) {
     res.send({ success: false, message: "Error in list product" });
@@ -202,7 +199,7 @@ router.get("/related-products/:pid/:cid", async (req, res) => {
       _id: { $ne: pid },
     })
       .select("-photo")
-      .limit(3)
+      .limit(4)
       .populate("category");
     res.send({ success: true, relatedProducts });
   } catch (err) {
