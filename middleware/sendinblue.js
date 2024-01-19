@@ -13,7 +13,8 @@ const sendEmail = async (to, subject, content) => {
       data: {
         sender: {
           name: "E-Shopping",
-          email: process.env.ADMIN_EMAIL,
+          email: "eshopping@gmail.com",
+          // email: process.env.ADMIN_EMAIL,
         },
         to: [{ email: to }],
         subject: subject,
