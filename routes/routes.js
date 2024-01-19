@@ -18,6 +18,7 @@ router.get("/", (req, res) => {
 
   res.send(users);
 });
+
 router.get("/users", async (req, res) => {
   const allUsers = await UserDetails.find().populate();
 

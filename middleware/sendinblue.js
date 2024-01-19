@@ -7,14 +7,12 @@ const sendEmail = async (to, subject, content) => {
       url: "https://api.sendinblue.com/v3/smtp/email",
       headers: {
         "content-type": "application/json",
-        "api-key":
-          "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",
+        "api-key": process.env.SEND_IN_BLUE_API_KEY,
       },
       data: {
         sender: {
           name: "E-Shopping",
-          email: "eshopping@gmail.com",
-          // email: process.env.ADMIN_EMAIL,
+          email: process.env.ADMIN_EMAIL,
         },
         to: [{ email: to }],
         subject: subject,
@@ -23,7 +21,8 @@ const sendEmail = async (to, subject, content) => {
     });
     console.log("Email sent successfully", response.data);
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error( "Error sending email:", error );
+    
   }
 };
 
