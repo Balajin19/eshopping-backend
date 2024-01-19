@@ -215,7 +215,6 @@ router.post("/generate-otp", async (req, res, next) => {
     res.send({ success: true, otp,message:"OTP sent to your registered email" });
   } catch ( err )
   {
-    console.log(err,"err");
     next(err);
   }
 });

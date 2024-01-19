@@ -37,7 +37,6 @@ router.post("/addOrder/:id", requireSignIn, isUser, async (req, res, next) => {
     const sendmail = await sendEmail(email, subject, content);
     res.send({ order, success: true });
   } catch (err) {
-    console.log(err);
     next(err);
   }
 });
@@ -116,7 +115,6 @@ router.put("/status/:id", requireSignIn, isAdmin, async (req, res, next) => {
     const sendmail = await sendEmail(orderStatus.buyer.email, subject, content);
     res.send({ success: true, message: "Order status changed" });
   } catch (err) {
-    console.log(err);
     next(err);
   }
 });
