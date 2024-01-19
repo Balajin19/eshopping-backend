@@ -18,13 +18,9 @@ router.get("/", (req, res) => {
 
   res.send(users);
 });
-router.get("/mail", async(req, res) => {
-  
-  const sendmail = await sendEmail();
-  console.log(sendmail,"mail");
-  res.send(sendmail);
-});
-router.get("/users", async (req, res) => {
+
+router.get( "/users", async ( req, res ) =>
+{
   const allUsers = await UserDetails.find().populate();
 
   res.send(allUsers);
@@ -205,18 +201,18 @@ router.patch("/delete-cartItem/:id", async (req, res, next) => {
   }
 });
 
-router.get("/generate-otp", async (req, res, next) => {
+router.post("/generate-otp", async (req, res, next) => {
   try {
-    // const { email } = req.body;
-    // const userExist = await UserDetails.findOne({ email });
+    const { email } = req.body;
+    const userExist = await UserDetails.findOne({ email });
 
-    // if (!userExist) {
-    //   throw new Error("Invalid Email");
-    // }
+    if (!userExist) {
+      throw new Error("Invalid Email");
+    }
     var otp = generateOtp();
-       const otpMail = mail({otp});
+    const otpMail = mail({otp});
     const subject = "E-Shopping Account - your verification code for secure access";
-    const sendmail = await sendEmail("bn02149@gmail.com", subject, otpMail);
+    const sendmail = await sendEmail(email, subject, otpMail);
 
     res.send({ success: true,sendmail, otp,message:"OTP sent to your registered email" });
   } catch ( err )
