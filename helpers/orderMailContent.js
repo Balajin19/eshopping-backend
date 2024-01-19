@@ -91,7 +91,7 @@ const orderMail = (name, orderNo, status, address, phone, date) => {
                     </div>
                     <div class="address-details">
                         <h4>Delivery Address</h4>
-                        <h5>${name}</h5>
+                        <h4>${name}</h4>
                         <p>${address}</p>
                         <p>Mobile no: ${phone}</p>
                     </div>`

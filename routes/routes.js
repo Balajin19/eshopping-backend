@@ -1,12 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const mail = require( "../helpers/otpMailContent" );
+const mail = require("../helpers/otpMailContent");
 const jwt = require("jsonwebtoken");
 const { hashPassword, comparePassword } = require("../helpers/authHelper.js");
-const {
-  generateOtp,
-  verifyOtp,
-} = require("../helpers/optController");
+const { generateOtp, verifyOtp } = require("../helpers/optController");
 const { requireSignIn, isAdmin, isUser } = require("../middleware/jwt.js");
 const sendEmail = require("../middleware/sendinblue");
 const UserDetails = require("../model/UserModel.js");
@@ -19,8 +16,7 @@ router.get("/", (req, res) => {
   res.send(users);
 });
 
-router.get( "/users", async ( req, res ) =>
-{
+router.get("/users", async (req, res) => {
   const allUsers = await UserDetails.find().populate();
 
   res.send(allUsers);
@@ -121,7 +117,7 @@ router.put("/update-profile", async (req, res, next) => {
 });
 router.put("/change-password", async (req, res, next) => {
   try {
-    const {email, password } = req.body;
+    const { email, password } = req.body;
     const existUser = await UserDetails.findOne({ email });
     const hashedPassword = await hashPassword(password);
     const user = await UserDetails.findByIdAndUpdate(
@@ -210,13 +206,18 @@ router.post("/generate-otp", async (req, res, next) => {
       throw new Error("Invalid Email");
     }
     var otp = generateOtp();
-    const otpMail = mail({otp});
-    const subject = "E-Shopping Account - your verification code for secure access";
+    const otpMail = mail({ otp });
+    const subject =
+      "E-Shopping Account - your verification code for secure access";
     const sendmail = await sendEmail(email, subject, otpMail);
 
-    res.send({ success: true,sendmail, otp,message:"OTP sent to your registered email" });
-  } catch ( err )
-  {
+    res.send({
+      success: true,
+      sendmail,
+      otp,
+      message: "OTP sent to your registered email",
+    });
+  } catch (err) {
     next(err);
   }
 });
