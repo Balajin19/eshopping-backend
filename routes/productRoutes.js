@@ -131,6 +131,7 @@ router.delete("/delete-product/:id", async (req, res, next) => {
     const product = await ProductDetails.findByIdAndDelete({
       _id: req.params.id,
     });
+
     res.send({ success: true, message: "Product deleted successfully!" });
   } catch (err) {
     next(err);
@@ -216,7 +217,6 @@ router.get("/product-category/:slug", async (req, res) => {
   } catch (err) {
     res.send({ success: false, message: "Error in showing category product" });
   }
-} );
-
+});
 
 module.exports = router;

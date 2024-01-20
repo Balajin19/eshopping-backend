@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 
 const UsersSchema = new mongoose.Schema(
   {
+    avatar: {
+      data: Buffer,
+      contentType: String,
+    },
     name: {
       type: String,
       required: true,
@@ -31,10 +35,12 @@ const UsersSchema = new mongoose.Schema(
     role: {
       type: Number,
     },
-    cartItems: [{
-      type: ObjectId,
-      ref: "Product",
-    }],
+    cartItems: [
+      {
+        type: ObjectId,
+        ref: "Product",
+      },
+    ],
   },
   { timestamps: true }
 );

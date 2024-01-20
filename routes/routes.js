@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const formidable = require("express-formidable");
 const mail = require("../helpers/otpMailContent");
 const jwt = require("jsonwebtoken");
 const { hashPassword, comparePassword } = require("../helpers/authHelper.js");
@@ -7,6 +8,7 @@ const { generateOtp, verifyOtp } = require("../helpers/optController");
 const { requireSignIn, isAdmin, isUser } = require("../middleware/jwt.js");
 const sendEmail = require("../middleware/sendinblue");
 const UserDetails = require("../model/UserModel.js");
+const fs = require("fs");
 const email = process.env.AUTH_EMAIL;
 router.get("/", (req, res) => {
   const users = {
@@ -115,6 +117,36 @@ router.put("/update-profile", async (req, res, next) => {
     next(err);
   }
 });
+router.get("/profile-photo/:id", async (req, res, next) => {
+  try {
+    const profile = await UserDetails.findOne({
+      _id: req.params.id,
+    }).populate();
+    if (profile.avatar.data) {
+      res.set("Content-type", profile.avatar.contentType);
+      res.send(profile.avatar.data);
+    } else {
+      res.send({ message: "No avatar Found" });
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+router.put("/profile-photo/:id", formidable(), async (req, res, next) => {
+  try {
+    const { avatar } = req.files;
+    const profile = await UserDetails.findOne({ _id: req.params.id });
+    if (avatar) {
+      profile.avatar.data = fs.readFileSync(avatar.path);
+      profile.avatar.contentType = avatar.type;
+    }
+    await profile.save();
+    res.send({ profile, success: true });
+  } catch (err) {
+    next(err);
+    res.send({ success: false, message: "Error in creating avatar" });
+  }
+});
 router.put("/change-password", async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -210,13 +242,16 @@ router.post("/generate-otp", async (req, res, next) => {
     const subject =
       "E-Shopping Account - your verification code for secure access";
     const sendmail = await sendEmail(email, subject, otpMail);
-
-    res.send({
-      success: true,
-      sendmail,
-      otp,
-      message: "OTP sent to your registered email",
-    });
+    if (sendmail.messageId) {
+      res.send({
+        success: true,
+        sendmail,
+        otp,
+        message: "OTP sent to your registered email",
+      });
+      return;
+    }
+    res.send({ success: false, message: "Error in sending mail" });
   } catch (err) {
     next(err);
   }
