@@ -84,7 +84,7 @@ const orderMail = (name, orderNo, status, address, phone, date) => {
                         }
                         <p>Thanks for shopping with E-Shopping!</p>
                         <button class="order-btn">
-                            <a href="http://localhost:3000/dashboard/user/orders">
+                            <a href="https://eshopping-website.netlify.app/dashboard/user/orders">
                                 Manage your order
                             </a>
                         </button>
@@ -100,7 +100,9 @@ const orderMail = (name, orderNo, status, address, phone, date) => {
                 <br>
                 <footer>
                     <p>Please share your queries regarding orders, send mail to <a
-                            href="mailto:${process.env.ADMIN_EMAIL}">${process.env.ADMIN_EMAIL}</a>.</p>
+                            href="mailto:${process.env.ADMIN_EMAIL}">${
+    process.env.ADMIN_EMAIL
+  }</a>.</p>
                 </footer>
             </div>
         </div>
