@@ -103,7 +103,8 @@ router.put("/status/:id", requireSignIn, isAdmin, async (req, res, next) => {
       .populate("buyer");
     const subject =
       orderStatus.status === "Cancel"
-        ? `Cancellation of your Order ${orderStatus?.orderNo} with E-Shopping!`
+        ? `Cancellation of your Order ${ orderStatus?.orderNo } with E-Shopping!` :
+        orderStatus.status === "Not Process"?`Order Status - Your Order with E-Shopping ${orderStatus?.orderNo} is ${orderStatus?.status}!`
         : `Order Status - Your Order with E-Shopping ${orderStatus?.orderNo} has been successfully ${orderStatus?.status}!`;
     const content = orderMail(
       orderStatus.buyer.name,
