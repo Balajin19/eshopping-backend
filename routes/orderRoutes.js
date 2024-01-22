@@ -56,7 +56,7 @@ router.delete("/cancel-Orders/:id", requireSignIn, async (req, res, next) => {
     const cancelOrder = await OrderDetails.findOneAndDelete({
       _id: req.params.id,
     }).populate("buyer", "-password");
-    const status = "Cancel";
+    const status = "Cancelled by user";
     const subject = `Cancellation of your Order ${cancelOrder?.orderNo} with E-Shopping!`;
     const content = orderMail(
       cancelOrder.buyer.name,

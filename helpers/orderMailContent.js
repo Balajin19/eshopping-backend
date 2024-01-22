@@ -64,17 +64,18 @@ const orderMail = (name, orderNo, status, address, phone, date) => {
                 <h3 class="mb-5 ">Hi ${name},</h3>
                 <div class="row">
               ${
-                status === "Cancel"
+                status === "Cancelled by user"
                   ? `<p>We would like to inform you that we have processed your cancellation request for the Order ${orderNo} has been cancelled.</p>`
+                  : status === "Cancel" || status === "Not Process"
+                  ? `<p>OOPS! Your order with ${orderNo} has been ${status}ed!</p>`
                   : `<div class="order-details">
                         <h4>Item in your order has been ${status}!</h4>
                         ${
                           status === "Delivered"
                             ? `<p>Item in order with order number ${orderNo} has been delivered! </p>`
-                            : `
-                        <p>Your order will be delivered ${
-                          status === "Confirmed" ? `by ${date}` : "soon"
-                        }.</p>
+                            : `<p>Your order will be delivered ${
+                                status === "Confirmed" ? `by ${date}` : "soon"
+                              }.</p>
                         <br>
                       <p> ${
                         status === "Confirmed"
